@@ -23,6 +23,24 @@ app.use((req, res, next) => {
 
 })
 
+app.use(express.json()) // middleware que convierte los req en jsons
+
+app.post('/friends', (req, res) => {
+    if (!req.body.name) {
+        return res.status(400).json({
+            error: 'Missing friend name'
+        })
+    }
+    
+    const newFriend = {
+        name: req.body.name,
+        id: friends.length
+    }
+    friends.push(newFriend)
+
+    res.json(newFriend) // esto es parte de tener la politica de que los responses siempre devuelvan jsons. 
+})
+
 app.get('/', (req, res) => {
     res.send({id: 1, name: "David Pérez"})
 } )
