@@ -15,6 +15,14 @@ const friends = [
     },
 ]
 
+app.use((req, res, next) => {
+    const start = Date.now()
+    next()
+    const delta = Date.now() - start
+    console.log(`${req.method} ${req.url} ${delta} ms`)
+
+})
+
 app.get('/', (req, res) => {
     res.send({id: 1, name: "David Pérez"})
 } )
@@ -33,7 +41,7 @@ app.get('/friends/:friendId', (req, res) => {
     if (friend) {
         res.status(200).json(friend)
     } else {
-        res.status(404).json({error: "Friend does not exists."})
+        res.status(404).json({error: "Friend does not exists!!!"})
     }
 } )
 
