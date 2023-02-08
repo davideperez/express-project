@@ -1,19 +1,21 @@
+//// Imports ////
+
 const express = require('express')
+const friendsController = require('./controllers/friends-controller')
+const messagesController = require('./controllers/messages-controller')
+
+//// SV Start ////
 
 const app = express()
-
 const PORT = 3000
 
-const friends = [
-    {
-        id: 0,
-        name: 'Olivier Messiaen'
-    },
-    {
-        id: 1,
-        name: 'Johann Sebastian Bach'
-    },
-]
+//// Data ////
+
+
+
+//// Middleware ////
+
+//#1
 
 app.use((req, res, next) => {
     const start = Date.now()
@@ -23,50 +25,20 @@ app.use((req, res, next) => {
 
 })
 
+//#2
+
 app.use(express.json()) // middleware que convierte los req en jsons
 
-app.post('/friends', (req, res) => {
-    if (!req.body.name) {
-        return res.status(400).json({
-            error: 'Missing friend name'
-        })
-    }
-    
-    const newFriend = {
-        name: req.body.name,
-        id: friends.length
-    }
-    friends.push(newFriend)
+//// Routes ////
 
-    res.json(newFriend) // esto es parte de tener la politica de que los responses siempre devuelvan jsons. 
-})
+app.get('/friends', friendsController.getFriends)
+app.get('/friends/:friendId',  friendsController.getFriend)
+app.post('/friends', friendsController.postFriend)
 
-app.get('/', (req, res) => {
-    res.send({id: 1, name: "David Pérez"})
-} )
+app.get('/messages', messagesController.getMessages)
+app.post('/messages',messagesController.postMessage)
 
-app.get('/messages', (req, res) => {
-    res.send("<ul><li> Hello David!! </li></ul>")
-} )
-
-app.get('/friends', (req, res) => {
-    res.json(friends) // or res.send(friends)
-} )
-
-app.get('/friends/:friendId', (req, res) => {
-    const friendId = Number(req.params.friendId)
-    const friend = friends[friendId]
-    if (friend) {
-        res.status(200).json(friend)
-    } else {
-        res.status(404).json({error: "Friend does not exists!!!"})
-    }
-} )
-
-
-app.post('/messages', (req, res) => {
-    console.log("Updating Messages...")
-} )
+//// Checks ////
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
 })
