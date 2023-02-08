@@ -5,7 +5,12 @@ function postMessage(req, res) {
 } 
 
 function getMessages(req, res) {
-        res.sendFile(path.join(__dirname, '..', 'public', 'images', 'beachChurch.jpg'))
+    res.render('messages', {
+        title: 'Mensajes a mi amigo.',
+        friend: 'Alberto Ginastera'
+    })
+    
+    //res.sendFile(path.join(__dirname, '..', 'public', 'images', 'beachChurch.jpg'))
     //res.send("<ul><li> Hello David!! </li></ul>")
 } 
 
